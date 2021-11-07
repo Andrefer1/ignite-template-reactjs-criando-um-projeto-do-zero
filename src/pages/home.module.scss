@@ -1,1 +1,56 @@
-// TODO
+.content {
+  a {
+    display: block;
+
+    & + a {
+      margin-top: 2.5rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      color: var(--heading);
+      padding-bottom: 0.5rem;
+    }
+
+    span {
+      font-size: 1.125rem;
+      color: var(--body);
+    }
+
+    .contentBottom {
+      margin-top: 1.5rem;
+      display: flex;
+      color: var(--info);
+
+      div {
+        display: flex;
+
+        & + div {
+          padding-left: 1.5rem;
+        }
+
+        time {
+          padding-left: 0.5rem;
+          font-size: 0.875rem;
+        }
+
+        p {
+          padding-left: 0.5rem;
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+
+  .loadMorePosts {
+    margin-top: 4rem;
+    color: var(--highlight);
+  }
+
+  button {
+    margin: 4rem 0;
+    color: var(--highlight);
+    border: 0;
+    background: transparent;
+  }
+}
