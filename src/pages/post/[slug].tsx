@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
-import readingTime from 'reading-time';
+import readingTime from 'reading-time/lib/reading-time';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { useRouter } from 'next/router';
@@ -40,19 +41,29 @@ interface GSProps {
 }
 
 export default function Post({ post }: PostProps): JSX.Element {
+  const [minutesLecture, setMinutesLecture] = useState<number>(0);
   const router = useRouter();
 
   if (router.isFallback) {
     return <h6>Carregando...</h6>;
   }
 
-  const text = post.data.content.map(content =>
-    content.body.map(e => e.text).join()
-  );
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    const text = post.data.content.map(content =>
+      content.body.map(e => e.text).join()
+    );
 
-  const allText = text.map(e => e).join();
+    const allText = text.map(e => e).join();
 
-  const stats = readingTime(allText);
+    const { minutes } = readingTime(allText);
+
+    const [min, sec] = String(minutes).split('.');
+
+    const totalMin = Number(sec) === 0 ? Number(min) : Number(min) + 2;
+
+    setMinutesLecture(totalMin);
+  }, [post.data.content]);
 
   return (
     <>
@@ -93,7 +104,7 @@ export default function Post({ post }: PostProps): JSX.Element {
               </div>
               <div>
                 <FiClock />
-                <time>{stats.text}</time>
+                <time>{minutesLecture} min</time>
               </div>
             </div>
           </header>
